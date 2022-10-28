@@ -18,7 +18,7 @@ app.whenReady().then(() => {
       webviewTag: true,
       //内置拼写检查器
       spellcheck: false,
-      // 估计不关闭会使得html全屏触发窗口也全屏
+      // 不关闭会使得html全屏触发窗口也全屏
       disableHtmlFullscreenWindowResize: true,
     },
   });

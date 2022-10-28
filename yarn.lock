@@ -1940,6 +1940,11 @@ verror@^1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
+vite-plugin-optimizer@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmmirror.com/vite-plugin-optimizer/-/vite-plugin-optimizer-1.4.0.tgz#60545e0c4e8d3790e3d3486db97ad85857ea0cd3"
+  integrity sha512-hTY1pdtSmN/BNOnjvmcmK+2fW1Ac9wD0gFBy67i5IsKwhr1fS1/GGmssdCaik2SpnplHjoDrmCgVsgBv20HzrA==
+
 vite@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmmirror.com/vite/-/vite-3.2.0.tgz#a4015914620ff0122ea57fddfecc0e250eb6582c"
