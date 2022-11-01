@@ -23,4 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
+# test & release
 test.js
+release

@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron';
+import { CustomScheme } from './CustomScheme';
 //忽略安全相关警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 
@@ -23,6 +24,12 @@ app.whenReady().then(() => {
     },
   });
   // 设置devtool状态   left, right, bottom, undocked, detach
-  mainWindow.webContents.openDevTools({ mode: 'undocked' });
-  mainWindow.loadURL(process.argv[2]);
+
+  if (process.argv[2]) {
+    mainWindow.webContents.openDevTools({ mode: 'undocked' });
+    mainWindow.loadURL(process.argv[2]);
+  } else {
+    CustomScheme.registerScheme();
+    mainWindow.loadURL(`app://index.html`);
+  }
 });

@@ -28,25 +28,31 @@ export let devPlugin = () => {
         //当viteDev开始监听的时候,启动electron子服务,监听这个
         let { spawn } = require('child_process');
         // spawn('执行程序',['隐含参数0 就是可执行程序的地址 在这里就是eletron的执行文件的路径 会自动加入到这里',‘参数1','参数2',...],{ options })
-        let electronProcess = spawn(
-          require('electron').toString(),
-          //参数1   入口文件 argv[1]      参数2   server地址    window,loadurl(argv[2]) 的由来
-          ['./dist/mainEntry.js', `http://127.0.0.1:${server.config.server.port}`],
-          {
-            // 当前执行地址
-            cwd: process.cwd(),
-            // 继承输出到主进程     inherit 继承
-            stdio: 'inherit',
-          }
-        );
+        let addressInfo = server.httpServer.address();
+        if (typeof addressInfo != 'string') {
+          console.log(addressInfo);
+          // console.log(process);
 
-        //监听electron子进程close事件
-        electronProcess.on('close', () => {
-          // 关闭viteDev
-          server.close();
-          //关闭进程
-          process.exit();
-        });
+          let electronProcess = spawn(
+            require('electron').toString(),
+            //参数1   入口文件 argv[1]      参数2   server地址    window,loadurl(argv[2]) 的由来
+            ['./dist/mainEntry.js', `http://${addressInfo.address}:${addressInfo.port}`],
+            {
+              // 当前执行地址
+              cwd: process.cwd(),
+              // 继承输出到主进程     inherit 继承
+              stdio: 'inherit',
+            }
+          );
+
+          //监听electron子进程close事件
+          electronProcess.on('close', () => {
+            // 关闭viteDev
+            server.close();
+            //关闭进程
+            process.exit();
+          });
+        }
       });
     },
   };
