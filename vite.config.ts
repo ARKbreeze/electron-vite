@@ -11,5 +11,7 @@ export default defineConfig({
     rollupOptions: {
       plugins: [buildPlugin()],
     },
+    // 关闭小文件转换base64    转换可以减少请求的发送 但是electron中是本地请求,反而会增加编译与解析的时间
+    assetsInlineLimit: 0,
   },
 });
