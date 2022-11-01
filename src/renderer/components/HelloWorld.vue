@@ -3,15 +3,14 @@
   import fs from 'fs';
   import { ipcRenderer } from 'electron';
 
-  defineProps<{ msg: string }>();
-
   const count = ref(0);
+  const msg = ref('electron-vue');
   console.log('fs :', fs);
   console.log('ipcRenderer :', ipcRenderer);
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <h1>{{}}</h1>
 
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
