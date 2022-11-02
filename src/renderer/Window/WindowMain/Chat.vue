@@ -1,7 +1,11 @@
 <template>
-  <p>chat-view</p>
+  <ChatBoard></ChatBoard>
+  <MessageBoard></MessageBoard>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import ChatBoard from './Chat/ChatBoard.vue';
+  import MessageBoard from './Chat/MessageBoard.vue';
+</script>
 
 <style scoped></style>

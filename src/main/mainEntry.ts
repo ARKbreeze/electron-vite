@@ -1,7 +1,13 @@
 import { app, BrowserWindow } from 'electron';
 import { CustomScheme } from './CustomScheme';
+import { CommonWindowEvent } from './CommonWindowEvent';
 //忽略安全相关警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+
+// 窗口创建时 进行win事件的注册
+app.on('browser-window-created', (e, win) => {
+  CommonWindowEvent.regWinEvent(win);
+});
 
 let mainWindow: BrowserWindow;
 
@@ -22,6 +28,12 @@ app.whenReady().then(() => {
       // 不关闭会使得html全屏触发窗口也全屏
       disableHtmlFullscreenWindowResize: true,
     },
+    // vue未加载完成不显示,控制逻辑放在 vue加载完成后调用
+    show: false,
+    // false无边框
+    frame: false,
+    // 是否可拖动
+    // movable: false
   });
   // 设置devtool状态   left, right, bottom, undocked, detach
 
@@ -32,4 +44,5 @@ app.whenReady().then(() => {
     CustomScheme.registerScheme();
     mainWindow.loadURL(`app://index.html`);
   }
+  CommonWindowEvent.listen();
 });

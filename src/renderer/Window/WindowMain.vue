@@ -7,6 +7,11 @@
 
 <script setup lang="ts">
   import BarLeft from '../components/BarLeft.vue';
+  import { onMounted } from 'vue';
+  import { ipcRenderer } from 'electron';
+  onMounted(() => {
+    ipcRenderer.invoke('showWindow');
+  });
 </script>
 
 <style scoped lang="scss">

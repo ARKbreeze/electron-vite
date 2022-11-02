@@ -21,7 +21,7 @@
   import { useRoute } from 'vue-router';
 
   let mainWindowRoutes = ref([
-    { path: '/WindowMain/Chat', isSelected: true, icon: 'icon-chat', iconSelected: 'icon-chat' },
+    { path: '/WindowMain/Chat', isSelected: true, icon: 'icon-chat1', iconSelected: 'icon-chat' },
     { path: '/WindowMain/Contact', isSelected: false, icon: 'icon-tongxunlu1', iconSelected: 'icon-tongxunlu' },
     { path: '/WindowMain/Collection', isSelected: false, icon: 'icon-shoucang1', iconSelected: 'icon-shoucang' },
   ]);
