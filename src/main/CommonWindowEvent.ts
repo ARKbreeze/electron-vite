@@ -1,4 +1,5 @@
-import { ipcMain, BrowserView, app, BrowserWindow } from 'electron';
+import { ipcMain, app, BrowserWindow } from 'electron';
+import { BrowerWindowOptions } from '../model/WindowConfig';
 
 export class CommonWindowEvent {
   // 获取对应的webContent
@@ -50,6 +51,32 @@ export class CommonWindowEvent {
     });
     win.on('unmaximize', () => {
       win.webContents.send('windowUnmaximized');
+    });
+
+    // 处理window.open打开窗口的配置问题
+    win.webContents.setWindowOpenHandler((param) => {
+      /**
+       * 不想要窗口就返回  { action : 'deny'}
+       * 正常  { action : 'allow' , overrideBrowserWindowOptions? : youCustomConfig }
+       */
+
+      /**
+       *  open 方案
+       *  只有一个线程 父子通信简单 生成速度快  窗口易于控制
+       *  也因为只有一个线程 所以一崩全崩  而且会导致关闭窗口依然会占用一部分内存  同样无法优化首屏
+       *  需要优化webview和BrowserView时,依然需要使用线程池方案
+       */
+
+      let config = BrowerWindowOptions.getOpenWindowOptions(JSON.parse(param.features));
+
+      if (config?.modal === true) {
+        config.parent = win;
+      }
+
+      return {
+        action: 'allow',
+        overrideBrowserWindowOptions: config
+      };
     });
   }
 }

@@ -1,40 +1,27 @@
 import { app, BrowserWindow } from 'electron';
+// 自定义协议
 import { CustomScheme } from './CustomScheme';
+// 事件监听
 import { CommonWindowEvent } from './CommonWindowEvent';
+// 窗口配置
+import { BrowerWindowOptions } from '../model/WindowConfig';
+
 //忽略安全相关警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 
-// 窗口创建时 进行win事件的注册
+// 窗口创建时 进行win事件的注册  open方案
 app.on('browser-window-created', (e, win) => {
   CommonWindowEvent.regWinEvent(win);
+  console.log('open');
 });
 
 let mainWindow: BrowserWindow;
 
 app.whenReady().then(() => {
-  mainWindow = new BrowserWindow({
-    webPreferences: {
-      //node集成  渲染进程
-      nodeIntegration: true,
-      // 安全开关   默认开  同源  关闭可以设置allowRunningInsecureCintent
-      webSecurity: false,
-      // 允许https页面运行 http的东西
-      allowRunningInsecureContent: true,
-      //单独上下文执行electrnApi 和 preload文件
-      contextIsolation: false,
-      webviewTag: true,
-      //内置拼写检查器
-      spellcheck: false,
-      // 不关闭会使得html全屏触发窗口也全屏
-      disableHtmlFullscreenWindowResize: true,
-    },
-    // vue未加载完成不显示,控制逻辑放在 vue加载完成后调用
-    show: false,
-    // false无边框
-    frame: false,
-    // 是否可拖动
-    // movable: false
-  });
+  mainWindow = new BrowserWindow(BrowerWindowOptions.getMainWindowOptions());
+
+  // 只给主窗口注册事件  CommonWindowEvent.regWinEvent(mainWindow);
+
   // 设置devtool状态   left, right, bottom, undocked, detach
 
   if (process.argv[2]) {

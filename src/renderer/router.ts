@@ -25,7 +25,7 @@ const routes = [
     component: () => import('./Window/WindowSetting.vue'),
     children: [
       {
-        path: 'AcountSetting',
+        path: 'AccountSetting',
         component: () => import('./Window/WindowSetting/AccountSetting.vue'),
       },
     ],

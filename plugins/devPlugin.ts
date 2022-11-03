@@ -23,6 +23,15 @@ export let devPlugin = () => {
         external: ['electron'],
       });
 
+      //preload编译
+      // require('esbuild').buildSync({
+      //   entryPoints: ['./src/main/preload.ts'],
+      //   bundle: true,
+      //   platform: 'node',
+      //   outfile: './dist/preload.js',
+      //   external: ['electron'],
+      // });
+
       //挂载监听
       server.httpServer?.once('listening', () => {
         //当viteDev开始监听的时候,启动electron子服务,监听这个
