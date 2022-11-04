@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { Ref, ref } from 'vue';
 import { ModelChat } from '../../model/ModelChat';
+import { useMessageStore } from './useMessageStore';
 
 let prepareData = () => {
   let result: Array<ModelChat> = [];
@@ -15,25 +16,19 @@ let prepareData = () => {
   return result;
 };
 
-// export const useChatStore = defineStore('chat', () => {
-//   let data: Ref<ModelChat[]> = ref(prepareData());
-//   let selectItem = () => {};
+export const useChatStore = defineStore('chat', () => {
+  let data: Ref<ModelChat[]> = ref(prepareData());
 
-//   return { data, selectItem };
-// });
+  // 设置isSlected
+  let selectItem = (item: ModelChat) => {
+    if (item.isSelected) return;
+    //处理select
+    data.value.forEach((i) => (i.isSelected = false));
+    item.isSelected = true;
+    //处理message更新
+    let messageStore = useMessageStore();
+    messageStore.initData(item);
+  };
 
-export const useOptionsTestStore = defineStore('test', {
-  state: () => {
-    return {
-      counter: 0
-    };
-  },
-  actions: {
-    increment() {
-      this.counter++;
-    },
-    decrement() {
-      this.counter--;
-    }
-  }
+  return { data, selectItem };
 });

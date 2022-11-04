@@ -9,6 +9,12 @@
         <button @click="useOptionsTestStore().increment">++</button>
         <button @click="useOptionsTestStore().decrement">--</button>
       </div>
+      <div>
+        <h3>state-setup</h3>
+        <p>{{ useTestStore().counter }}</p>
+        <button @click="useTestStore().increment">++</button>
+        <button @click="useTestStore().decrement">--</button>
+      </div>
     </div>
   </div>
 </template>
@@ -17,7 +23,7 @@
 import BarTop from '../components/BarTop.vue';
 import { dialogReady } from '../common/Dialog';
 import { onMounted } from 'vue';
-import { useOptionsTestStore } from '../store/useChatStore';
+import { useOptionsTestStore, useTestStore } from '../store/useTestStore';
 
 // 挂载结束 发送准备完成消息
 onMounted(() => dialogReady());
