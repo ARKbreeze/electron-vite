@@ -4,7 +4,7 @@ import { CustomScheme } from './CustomScheme';
 // 事件监听
 import { CommonWindowEvent } from './CommonWindowEvent';
 // 窗口配置
-import { BrowerWindowOptions } from '../model/WindowConfig';
+import { BrowerWindowOptions } from './config/WindowConfig';
 
 //忽略安全相关警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';

@@ -8,17 +8,17 @@ const routes = [
     children: [
       {
         path: 'Chat',
-        component: () => import('./Window/WindowMain/Chat.vue'),
+        component: () => import('./Window/WindowMain/Chat.vue')
       },
       {
         path: 'Contact',
-        component: () => import('./Window/WindowMain/Contact.vue'),
+        component: () => import('./Window/WindowMain/Contact.vue')
       },
       {
         path: 'Collection',
-        component: () => import('./Window/WindowMain/Collection.vue'),
-      },
-    ],
+        component: () => import('./Window/WindowMain/Collection.vue')
+      }
+    ]
   },
   {
     path: '/WindowSetting',
@@ -26,17 +26,21 @@ const routes = [
     children: [
       {
         path: 'AccountSetting',
-        component: () => import('./Window/WindowSetting/AccountSetting.vue'),
-      },
-    ],
+        component: () => import('./Window/WindowSetting/AccountSetting.vue')
+      }
+    ]
   },
   {
     path: '/WindowUserInfo',
-    component: () => import('./Window/WindowUserInfo.vue'),
+    component: () => import('./Window/WindowUserInfo.vue')
   },
+  {
+    path: '/WindowTest',
+    component: () => import('./Window/WindowTest.vue')
+  }
 ];
 
 export let router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: createWebHistory()
 });

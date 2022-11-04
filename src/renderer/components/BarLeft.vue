@@ -10,6 +10,9 @@
     </div>
     <div class="setting">
       <div class="menuItem">
+        <i class="icon icon-setting" @click="openTestWindow"></i>
+      </div>
+      <div class="menuItem">
         <i class="icon icon-setting" @click="openSettingWindow"></i>
       </div>
     </div>
@@ -49,6 +52,10 @@ let openSettingWindow = async () => {
   // window.open('/WindowSetting/AccountSetting', '_black', JSON.stringify(config));
   const subWindow = await createDialog('/WindowSetting/AccountSetting', config);
   subWindow.postMessage({ msg: "i'm you father" });
+};
+
+let openTestWindow = async () => {
+  const subWindow = await createDialog('/WindowTest', {});
 };
 
 window.addEventListener('message', (e) => {

@@ -1,5 +1,5 @@
 import { ipcMain, app, BrowserWindow } from 'electron';
-import { BrowerWindowOptions } from '../model/WindowConfig';
+import { BrowerWindowOptions } from './config/WindowConfig';
 
 export class CommonWindowEvent {
   // 获取对应的webContent
