@@ -10,10 +10,10 @@ export const useMessageStore = defineStore('message', () => {
   let msgOut = `out message`;
 
   let initData = (chat: ModelChat) => {
-    let result = [];
+    let result: Array<ModelMessage> = [];
     for (let i = 0; i < 10; i++) {
       let model = new ModelMessage();
-      model.createTitme = Date.now();
+      model.createTime = Date.now();
       model.isInMsg = i % 2 === 0;
       model.chatId = chat.id;
       model.avatar = chat.avatar;

@@ -20,7 +20,7 @@ export let devPlugin = () => {
         //出口
         outfile: './dist/mainEntry.js',
         //
-        external: ['electron'],
+        external: ['electron']
       });
 
       //preload编译
@@ -50,7 +50,7 @@ export let devPlugin = () => {
               // 当前执行地址
               cwd: process.cwd(),
               // 继承输出到主进程     inherit 继承
-              stdio: 'inherit',
+              stdio: 'inherit'
             }
           );
 
@@ -63,7 +63,7 @@ export let devPlugin = () => {
           });
         }
       });
-    },
+    }
   };
 };
 
@@ -81,7 +81,7 @@ export let getReplace = () => {
     result[item] = () => {
       return {
         find: new RegExp(`^${item}$`),
-        code: `const ${item} = require('${item}');export { ${item} as default }`,
+        code: `const ${item.replace(/-/g, '_')} = require('${item}');export { ${item.replace(/-/g, '_')} as default }`
         // code: `const ${item} = require('${item}');export default ${item} `,
       };
     };
@@ -93,7 +93,7 @@ export let getReplace = () => {
 
     return {
       find: new RegExp('^electron$'),
-      code: ` const { ${electronModules} } = require('electron') ; export { ${electronModules} }  `,
+      code: ` const { ${electronModules} } = require('electron') ; export { ${electronModules} }  `
     };
   };
 

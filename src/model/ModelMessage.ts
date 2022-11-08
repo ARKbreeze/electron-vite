@@ -1,7 +1,7 @@
 import { ModelBase } from './ModelBase';
 
 export class ModelMessage extends ModelBase {
-  createTitme?: number;
+  createTime?: number;
   receiveTime?: number;
   messageContent?: string;
   chatId?: string;
