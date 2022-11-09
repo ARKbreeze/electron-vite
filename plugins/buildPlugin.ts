@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 
 export let buildPlugin = () => {
@@ -9,8 +9,9 @@ export let buildPlugin = () => {
       let buildObj = new BuildObj();
       buildObj.buildMain();
       buildObj.preparePackageJson();
+      buildObj.prepareSqlite();
       buildObj.buildInstaller();
-    },
+    }
   };
 };
 
@@ -33,7 +34,7 @@ class BuildObj {
       //出口
       outfile: './dist/mainEntry.js',
       //
-      external: ['electron'],
+      external: ['electron']
     });
   }
 
@@ -53,7 +54,14 @@ class BuildObj {
     // 添加主入口
     localPkgJson.main = 'mainEntry.js';
 
+    //添加处理的生产依赖
+    localPkgJson.dependencies['better-sqlite3'] = '*';
+    localPkgJson.dependencies['bindings'] = '*';
+
     // 删除脚本 除electron之外开发依赖
+    /**
+     * @desc 生产依赖builder会帮你处理
+     */
     delete localPkgJson.scripts;
     delete localPkgJson.devDependencies;
     localPkgJson.devDependencies = { electron: electronConfig };
@@ -62,6 +70,57 @@ class BuildObj {
     let targetJsonPath = path.resolve(process.cwd(), 'dist', 'package.json');
     fs.writeFileSync(targetJsonPath, JSON.stringify(localPkgJson));
     fs.mkdirSync(path.resolve(process.cwd(), 'dist', 'node_modules'));
+  }
+
+  /**
+   * @desc 处理better-sqlite3
+   */
+  async prepareSqlite() {
+    //拷贝better-sqlite3
+    let srcDir = path.join(process.cwd(), 'node_modules/better-sqlite3');
+    let destDir = path.join(process.cwd(), 'dist/node_modules/better-sqlite3');
+
+    //不存在的路径会直接创建
+    fs.ensureDirSync(destDir);
+    //拷贝文件
+    fs.copySync(srcDir, destDir, {
+      filter: (src, dest) => {
+        // console.log('all', src);
+        // 筛选需要拷贝的文件返回true
+        // 1. 精准复制build的node出来
+        if (src.endsWith('better-sqlite3') || src.endsWith('build') || src.endsWith('release') || src.endsWith('better_sqlite3.node')) {
+          // console.log('复制的', src);
+          return true;
+        } else if (src.includes(path.join(process.cwd(), 'node_modules/better-sqlite3/lib'))) {
+          // 把lib文件夹全部复制出来
+          // console.log('lib', src);
+          return true;
+        }
+        // 其他文件不复制
+        // console.log('没复制的', src);
+        return false;
+      }
+    });
+
+    // 制作better-sqlite3的package.json
+    let pkgJson = `{"name": "better-sqlite3","main": "lib/index.js"}`;
+    let pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/better-sqlite3/package.json');
+    fs.writeFileSync(pkgJsonPath, pkgJson);
+
+    // 添加better-sqlite3 依赖的bindings
+    // bindings 指明原声better-sqlite3.node的位置
+
+    let bindingsContent = `module.exports = () => {
+      let addonPath = require("path").join(__dirname, '../better-sqlite3/build/Release/better_sqlite3.node');
+      return require(addonPath);
+      };`;
+    let bindingsPath = path.join(process.cwd(), 'dist/node_modules/bindings/index.js');
+    fs.ensureFileSync(bindingsPath);
+    fs.writeFileSync(bindingsPath, bindingsContent);
+
+    pkgJson = `{"name": "bindings","main": "index.js"}`;
+    pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/bindings/package.json');
+    fs.writeFileSync(pkgJsonPath, pkgJson);
   }
 
   /**
@@ -74,7 +133,7 @@ class BuildObj {
           // 生成文件位置
           output: path.resolve(process.cwd(), 'release'),
           // 入口
-          app: path.resolve(process.cwd(), 'dist'),
+          app: path.resolve(process.cwd(), 'dist')
         },
         // 除了dependecies外需要的文件  入口应该也不用写
         files: ['**'],
@@ -92,13 +151,13 @@ class BuildObj {
           // 桌面快捷方式
           createDesktopShortcut: true,
           // 图标名称
-          shortcutName: 'juzishuDesktop',
+          shortcutName: 'juzishuDesktop'
         },
         //生成yml 为更新用
-        publish: [{ provider: 'generic', url: 'http://localhost:5500/' }],
+        publish: [{ provider: 'generic', url: 'http://localhost:5500/' }]
       },
       // 项目地址
-      project: process.cwd(),
+      project: process.cwd()
     };
 
     return require('electron-builder').build(options);

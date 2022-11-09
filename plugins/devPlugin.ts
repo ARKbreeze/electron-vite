@@ -78,13 +78,11 @@ export let getReplace = () => {
   // };
 
   for (let item of externalModels) {
-    result[item] = () => {
-      return {
-        find: new RegExp(`^${item}$`),
-        code: `const ${item.replace(/-/g, '_')} = require('${item}');export { ${item.replace(/-/g, '_')} as default }`
-        // code: `const ${item} = require('${item}');export default ${item} `,
-      };
-    };
+    result[item] = () => ({
+      find: new RegExp(`^${item}$`),
+      code: `const ${item.replace(/-/g, '_')} = require('${item}');export { ${item.replace(/-/g, '_')} as default }`
+      // code: `const ${item} = require('${item}');export default ${item} `,
+    });
   }
 
   result['electron'] = () => {
