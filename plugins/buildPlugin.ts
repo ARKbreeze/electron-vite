@@ -10,6 +10,7 @@ export let buildPlugin = () => {
       buildObj.buildMain();
       buildObj.preparePackageJson();
       buildObj.prepareSqlite();
+      buildObj.prepareKnex();
       buildObj.buildInstaller();
     }
   };
@@ -57,6 +58,7 @@ class BuildObj {
     //添加处理的生产依赖
     localPkgJson.dependencies['better-sqlite3'] = '*';
     localPkgJson.dependencies['bindings'] = '*';
+    localPkgJson.dependencies['knex'] = '*';
 
     // 删除脚本 除electron之外开发依赖
     /**
@@ -120,6 +122,30 @@ class BuildObj {
 
     pkgJson = `{"name": "bindings","main": "index.js"}`;
     pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/bindings/package.json');
+    fs.writeFileSync(pkgJsonPath, pkgJson);
+  }
+
+  /**
+   * @desc 处理knex.js
+   */
+  prepareKnex() {
+    //编译knex
+    let pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/knex');
+    fs.ensureDirSync(pkgJsonPath);
+
+    require('esbuild').buildSync({
+      entryPoints: ['./node_modules/knex/knex.js'],
+      bundle: true,
+      platform: 'node',
+      format: 'cjs',
+      minify: true,
+      outfile: './dist/node_modules/knex/index.js',
+      external: ['oracledb', 'pg-query-stream', 'pg', 'sqlite3', 'tedious', 'mysql', 'mysql2', 'better-sqlite3']
+    });
+
+    // 设置 package.json
+    pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/knex/package.json');
+    let pkgJson = `{"name": "knex","main": "index.js"}`;
     fs.writeFileSync(pkgJsonPath, pkgJson);
   }
 

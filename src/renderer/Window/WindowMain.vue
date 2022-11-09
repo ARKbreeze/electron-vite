@@ -10,10 +10,12 @@ import BarLeft from '../components/BarLeft.vue';
 import { onMounted } from 'vue';
 import { ipcRenderer } from 'electron';
 import Database from 'better-sqlite3';
+import knex from 'knex';
 onMounted(() => {
   ipcRenderer.invoke('showWindow');
 
-  console.log(Database);
+  console.log('knex', knex);
+  console.log('better-sqlite3', Database);
 });
 </script>
 
