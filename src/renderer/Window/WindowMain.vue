@@ -13,11 +13,12 @@ import { db } from '../../common/db';
 onMounted(() => {
   ipcRenderer.invoke('showWindow');
 
-  db("Chat")
-  .first()
-  .then((obj) => {
-    console.log(obj);
-  });
+  db('Chat')
+    .first()
+    .then((obj) => {
+      console.log(obj);
+    });
+});
 </script>
 
 <style scoped lang="scss">
