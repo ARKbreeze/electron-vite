@@ -8,20 +8,20 @@ if (!dbInstance) {
 
   // 开发取本地
   if (location.href.startsWith('http')) {
-    console.log('11111111');
+    console.log('development-db');
 
     // console.log('cwd', process.cwd());
     // console.log('execPath', process.execPath);
 
     //mac  darwin
     dbPath = path.join(process.cwd(), './src/common/db.db');
-    //
+    //window 可以
     // dbPath = path.join(process.execPath, '../../../../src/common/db.db');
 
     console.log('dbPath', dbPath);
     console.log(fs.existsSync(dbPath));
   } else {
-    console.log(22222222);
+    console.log('production-db');
 
     //生产
     // 确定db是否存在 不存在创建新的    darwin  unix系内核
@@ -44,7 +44,7 @@ if (!dbInstance) {
     //   fs.copyFileSync(resourceDbPath, dbPath);
     // }
 
-    dbPath = process.platform == 'darwin' ? path.join(process.execPath, '../../../../../Resources/db.db') : path.join(process.execPath, '../resource/db.db');
+    dbPath = process.platform == 'darwin' ? path.join(process.execPath, '../../../../../Resources/db.db') : path.join(process.execPath, '../resources/db.db');
     // darwin 的resource路径
     console.log(fs.existsSync(dbPath), dbPath);
   }
