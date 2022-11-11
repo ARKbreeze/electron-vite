@@ -9,14 +9,15 @@
 import BarLeft from '../components/BarLeft.vue';
 import { onMounted } from 'vue';
 import { ipcRenderer } from 'electron';
-import Database from 'better-sqlite3';
-import knex from 'knex';
+import { db } from '../../common/db';
 onMounted(() => {
   ipcRenderer.invoke('showWindow');
 
-  console.log('knex', knex);
-  console.log('better-sqlite3', Database);
-});
+  db("Chat")
+  .first()
+  .then((obj) => {
+    console.log(obj);
+  });
 </script>
 
 <style scoped lang="scss">

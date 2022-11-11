@@ -8,7 +8,9 @@
     "preview": "vite preview",
     "rebuild": "electron-rebuild -f -w  --module-dir ./node_modules/better-sqlite3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fs-extra": "^10.1.0"
+  },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.2.0",
     "better-sqlite3": "^7.6.2",

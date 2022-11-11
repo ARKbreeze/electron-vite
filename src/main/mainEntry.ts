@@ -30,6 +30,7 @@ app.whenReady().then(() => {
   } else {
     CustomScheme.registerScheme();
     mainWindow.loadURL(`app://index.html`);
+    mainWindow.webContents.openDevTools({ mode: 'undocked' });
   }
   CommonWindowEvent.listen();
 });

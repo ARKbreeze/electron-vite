@@ -70,7 +70,7 @@ export let devPlugin = () => {
 //只是导出  vite-plugin-optimizer  的 配置而已
 export let getReplace = () => {
   // 外部模块注册   web中使用node和electron
-  let externalModels = ['os', 'fs', 'path', 'events', 'child_process', 'crypto', 'http', 'buffer', 'url', 'better-sqlite3', 'knex'];
+  let externalModels = ['os', 'fs', 'fs-extra', 'path', 'events', 'child_process', 'crypto', 'http', 'buffer', 'url', 'knex', 'better-sqlite3'];
   let result = {};
 
   // result = {
@@ -80,7 +80,7 @@ export let getReplace = () => {
   for (let item of externalModels) {
     result[item] = () => ({
       find: new RegExp(`^${item}$`),
-      code: `const ${item.replace(/-/g, '_')} = require('${item}');export { ${item.replace(/-/g, '_')} as default }`
+      code: `const ${item.replace('-', '_')} = require('${item}');export { ${item.replace('-', '_')} as default }`
       // code: `const ${item} = require('${item}');export default ${item} `,
     });
   }

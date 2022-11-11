@@ -90,16 +90,16 @@ class BuildObj {
         // console.log('all', src);
         // 筛选需要拷贝的文件返回true
         // 1. 精准复制build的node出来
-        if (src.endsWith('better-sqlite3') || src.endsWith('build') || src.endsWith('release') || src.endsWith('better_sqlite3.node')) {
-          // console.log('复制的', src);
+        if (src.endsWith('better-sqlite3') || src.endsWith('build') || src.endsWith('Release') || src.endsWith('better_sqlite3.node')) {
+          console.log('复制的', src);
           return true;
         } else if (src.includes(path.join(process.cwd(), 'node_modules/better-sqlite3/lib'))) {
           // 把lib文件夹全部复制出来
-          // console.log('lib', src);
+          console.log('lib', src);
           return true;
         }
         // 其他文件不复制
-        // console.log('没复制的', src);
+        console.log('没复制的', src);
         return false;
       }
     });
@@ -145,7 +145,7 @@ class BuildObj {
 
     // 设置 package.json
     pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/knex/package.json');
-    let pkgJson = `{"name": "knex","main": "index.js"}`;
+    let pkgJson = `{"name": "bindings","main": "index.js"}`;
     fs.writeFileSync(pkgJsonPath, pkgJson);
   }
 
@@ -167,6 +167,7 @@ class BuildObj {
         productName: 'electron-vite',
         appId: 'com.juzishu.desktop',
         asar: true,
+        extraResources: [{ from: `./src/common/db.db`, to: `./` }],
         nsis: {
           // 一键安装
           oneClick: true,
