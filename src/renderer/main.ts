@@ -9,3 +9,6 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.mount('#app');
+
+const naive = require('../naive/build/Release/addon.node');
+console.log(naive.readFilePaths());

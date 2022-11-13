@@ -1,0 +1,9 @@
+{
+  "name": "addon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "node-addon-api": "^5.0.0"
+  }
+}
