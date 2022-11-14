@@ -167,7 +167,10 @@ class BuildObj {
         productName: 'electron-vite',
         appId: 'com.juzishu.desktop',
         asar: true,
-        extraResources: [{ from: `./src/common/db.db`, to: `./` }],
+        extraResources: [
+          { from: `./src/common/db.db`, to: `./` },
+          { from: `./src/naive/build/Release/naive.node`, to: './' }
+        ],
         nsis: {
           // 一键安装
           oneClick: true,
