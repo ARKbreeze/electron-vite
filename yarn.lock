@@ -2183,6 +2183,11 @@ muggle-string@^0.1.0:
   resolved "https://registry.npmmirror.com/muggle-string/-/muggle-string-0.1.0.tgz#1fda8a281c8b27bb8b70466dbc9f27586a8baa6c"
   integrity sha512-Tr1knR3d2mKvvWthlk7202rywKbiOm4rVFLsfAaSIhJ6dt9o47W4S+JMtWhd/PW9Wrdew2/S2fSvhz3E2gkfEg==
 
+naive@*:
+  version "0.0.0"
+  resolved "https://registry.npmmirror.com/naive/-/naive-0.0.0.tgz#ee809ed91cf45b4fd46fd772bdb2be691d021f4d"
+  integrity sha512-wG3Ssb1D8moB1IsT5b2RHqGnZ74EhNmprw0qD1ZyDTJGqKC5oZE+4ygiQL6wnezYb996p9QL12akEu+EujUXSA==
+
 nanoid@^3.3.4:
   version "3.3.4"
   resolved "https://registry.npmmirror.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"

@@ -115,7 +115,7 @@ class BuildObj {
     // bindings 指明原声better-sqlite3.node的位置
 
     let bindingsContent = `module.exports = (item) => {
-      let addonPath = require('path').join(__dirname, '..', item, 'build/Release', item.replace(/-/g, '_') + '.node');
+      let addonPath = require('path').join(__dirname, '..',item.replace('.node','').replace('_','-'), 'build/Release', item);
       return require(addonPath);
     };`;
     let bindingsPath = path.join(process.cwd(), 'dist/node_modules/bindings/index.js');

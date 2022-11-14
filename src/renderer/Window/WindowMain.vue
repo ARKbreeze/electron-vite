@@ -24,7 +24,7 @@ onMounted(() => {
   // const naive = require('naive');
 
   // console.log(require('bindings')('naive').readFilePaths());
-  console.log(naive);
+  console.log(require('bindings')('naive.node'));
 });
 </script>
 
