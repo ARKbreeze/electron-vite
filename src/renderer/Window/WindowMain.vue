@@ -10,6 +10,8 @@ import BarLeft from '../components/BarLeft.vue';
 import { onMounted } from 'vue';
 import { ipcRenderer } from 'electron';
 import { db } from '../../common/db';
+import naive from 'naive';
+
 onMounted(() => {
   ipcRenderer.invoke('showWindow');
 
@@ -18,6 +20,11 @@ onMounted(() => {
     .then((obj) => {
       console.log(obj);
     });
+
+  // const naive = require('naive');
+
+  // console.log(require('bindings')('naive').readFilePaths());
+  console.log(naive);
 });
 </script>
 

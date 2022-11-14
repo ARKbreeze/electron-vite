@@ -70,7 +70,7 @@ export let devPlugin = () => {
 //只是导出  vite-plugin-optimizer  的 配置而已
 export let getReplace = () => {
   // 外部模块注册   web中使用node和electron
-  let externalModels = ['os', 'fs', 'fs-extra', 'path', 'events', 'child_process', 'crypto', 'http', 'buffer', 'url', 'knex', 'better-sqlite3'];
+  let externalModels = ['os', 'fs', 'fs-extra', 'path', 'events', 'child_process', 'crypto', 'http', 'buffer', 'url', 'knex', 'better-sqlite3', 'naive'];
   let result = {};
 
   // result = {

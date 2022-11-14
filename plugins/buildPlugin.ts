@@ -10,6 +10,7 @@ export let buildPlugin = () => {
       buildObj.buildMain();
       buildObj.preparePackageJson();
       buildObj.prepareSqlite();
+      buildObj.prepareNaive();
       buildObj.prepareKnex();
       buildObj.buildInstaller();
     }
@@ -59,6 +60,7 @@ class BuildObj {
     localPkgJson.dependencies['better-sqlite3'] = '*';
     localPkgJson.dependencies['bindings'] = '*';
     localPkgJson.dependencies['knex'] = '*';
+    localPkgJson.dependencies['naive'] = '*';
 
     // 删除脚本 除electron之外开发依赖
     /**
@@ -112,16 +114,51 @@ class BuildObj {
     // 添加better-sqlite3 依赖的bindings
     // bindings 指明原声better-sqlite3.node的位置
 
-    let bindingsContent = `module.exports = () => {
-      let addonPath = require("path").join(__dirname, '../better-sqlite3/build/Release/better_sqlite3.node');
+    let bindingsContent = `module.exports = (item) => {
+      let addonPath = require('path').join(__dirname, '..', item, 'build/Release', item.replace(/-/g, '_') + '.node');
       return require(addonPath);
-      };`;
+    };`;
     let bindingsPath = path.join(process.cwd(), 'dist/node_modules/bindings/index.js');
     fs.ensureFileSync(bindingsPath);
     fs.writeFileSync(bindingsPath, bindingsContent);
 
     pkgJson = `{"name": "bindings","main": "index.js"}`;
     pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/bindings/package.json');
+    fs.writeFileSync(pkgJsonPath, pkgJson);
+  }
+
+  /**
+   * @desc 处理naive模块
+   */
+  prepareNaive() {
+    //拷贝
+    let srcDir = path.join(process.cwd(), 'node_modules/naive');
+    let destDir = path.join(process.cwd(), 'dist/node_modules/naive');
+
+    //不存在的路径会直接创建
+    fs.ensureDirSync(destDir);
+    //拷贝文件
+    fs.copySync(srcDir, destDir, {
+      filter: (src, dest) => {
+        // console.log('all', src);
+        // 筛选需要拷贝的文件返回true
+        // 1. 精准复制build的node出来
+        if (src.endsWith('naive') || src.endsWith('build') || src.endsWith('Release') || src.endsWith('naive.node')) {
+          console.log('复制的', src);
+          return true;
+        } else if (src.includes(path.join(process.cwd(), 'node_modules/naive/lib'))) {
+          // 把lib文件夹全部复制出来
+          console.log('lib', src);
+          return true;
+        }
+        // 其他文件不复制
+        console.log('没复制的', src);
+        return false;
+      }
+    });
+
+    let pkgJson = `{"name": "naive","main": "lib/index.js"}`;
+    let pkgJsonPath = path.join(process.cwd(), 'dist/node_modules/naive/package.json');
     fs.writeFileSync(pkgJsonPath, pkgJson);
   }
 
