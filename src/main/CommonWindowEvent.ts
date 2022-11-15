@@ -1,4 +1,5 @@
 import { ipcMain, app, BrowserWindow } from 'electron';
+import { Update } from './Update';
 import { BrowerWindowOptions } from './config/WindowConfig';
 
 export class CommonWindowEvent {
@@ -41,6 +42,11 @@ export class CommonWindowEvent {
     //获取路径
     ipcMain.handle('getPath', (e, name: any) => {
       return app.getPath(name);
+    });
+
+    //升级
+    ipcMain.handle('win-update', () => {
+      Update.check();
     });
   }
 

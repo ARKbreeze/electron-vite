@@ -3,6 +3,8 @@
     <BarTop></BarTop>
     <div class="testBox">
       <h2>test-view</h2>
+      <h3>version : {{ pkg.version }}</h3>
+      <button @click="update">更新</button>
       <div>
         <h3>state-options</h3>
         <p>{{ useOptionsTestStore().counter }}</p>
@@ -43,6 +45,8 @@
 
 <script setup lang="ts">
 import BarTop from '../components/BarTop.vue';
+import pkg from '../../../package.json';
+import { ipcRenderer } from 'electron';
 import { dialogReady } from '../common/Dialog';
 import { onMounted, ref } from 'vue';
 import { useOptionsTestStore, useTestStore } from '../store/useTestStore';
@@ -95,6 +99,11 @@ let queryData = async () => {
 let deleteData = async () => {
   await db('Chat').where({ id: db_del_ipt.value }).delete();
   db_result.value = `${db_del_ipt.value} 已删除`;
+};
+
+// 更新
+let update = () => {
+  ipcRenderer.invoke('win-update');
 };
 </script>
 
