@@ -36,7 +36,7 @@ export let devPlugin = () => {
       server.httpServer?.once('listening', () => {
         //当viteDev开始监听的时候,启动electron子服务,监听这个
         let { spawn } = require('child_process');
-        // spawn('执行程序',['隐含参数0 就是可执行程序的地址 在这里就是eletron的执行文件的路径 会自动加入到这里',‘参数1','参数2',...],{ options })
+        // spawn('执行程序',['隐含参数0 就是可执行程序的地址 在这里就是electron的执行文件的路径 会自动加入到这里',‘参数1','参数2',...],{ options })
         let addressInfo = server.httpServer.address();
         if (typeof addressInfo != 'string') {
           console.log(addressInfo);
@@ -44,7 +44,7 @@ export let devPlugin = () => {
 
           let electronProcess = spawn(
             require('electron').toString(),
-            //参数1   入口文件 argv[1]      参数2   server地址    window,loadurl(argv[2]) 的由来
+            //参数1   入口文件 argv[1]      参数2   server地址    window.loadURL(argv[2]) 的由来
             ['./dist/mainEntry.js', `http://${addressInfo.address}:${addressInfo.port}`],
             {
               // 当前执行地址
@@ -70,11 +70,11 @@ export let devPlugin = () => {
 //只是导出  vite-plugin-optimizer  的 配置而已
 export let getReplace = () => {
   // 外部模块注册   web中使用node和electron
-  let externalModels = ['os', 'fs', 'fs-extra', 'path', 'events', 'child_process', 'crypto', 'http', 'buffer', 'url', 'knex', 'better-sqlite3'];
+  let externalModels = ['os', 'fs', 'fs-extra', 'request', 'path', 'events', 'child_process', 'crypto', 'http', 'buffer', 'url', 'knex', 'better-sqlite3', 'adm-zip', 'axios'];
   let result = {};
 
   // result = {
-  //   os: () => ({ find: new RegExp('^os$'), code: `const os = requrie('os');export { os as default }` }),
+  //   os: () => ({ find: new RegExp('^os$'), code: `const os = require('os');export { os as default }` }),
   // };
 
   for (let item of externalModels) {
@@ -104,7 +104,7 @@ export let getReplace = () => {
 //   // 第一种写法
 //   //  会生成一个js文件  当代码中出现 import { ipcRender } from ‘electron’
 //   // 会引入这个js  所以
-//   electron: ` const { ipcRender }  = require('electron') ; export { ipcrender }  `,
+//   electron: ` const { ipcRender }  = require('electron') ; export { ipcRender }  `,
 
 //   //第二种写法
 //   fs: () => {

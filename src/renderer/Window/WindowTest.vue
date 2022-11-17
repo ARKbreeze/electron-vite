@@ -4,7 +4,8 @@
     <div class="testBox">
       <h2>test-view</h2>
       <h3>version : {{ pkg.version }}</h3>
-      <button @click="update">更新</button>
+      <button @click="update">全量更新</button>
+      <button @click="winIncrement">增量更新</button>
       <div>
         <h3>state-options</h3>
         <p>{{ useOptionsTestStore().counter }}</p>
@@ -101,9 +102,14 @@ let deleteData = async () => {
   db_result.value = `${db_del_ipt.value} 已删除`;
 };
 
-// 更新
+// 全更新
 let update = () => {
   ipcRenderer.invoke('win-update');
+};
+// 增量更新
+let winIncrement = () => {
+  ipcRenderer.invoke('win-increment');
+  console.log('increment');
 };
 </script>
 

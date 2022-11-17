@@ -1,6 +1,7 @@
 import knex, { Knex } from 'knex';
 import fs from 'fs-extra';
 import path from 'path';
+import { ipcRenderer } from 'electron';
 let dbInstance: Knex;
 
 if (!dbInstance) {
@@ -22,6 +23,7 @@ if (!dbInstance) {
     console.log(fs.existsSync(dbPath));
   } else {
     console.log('production-db');
+    console.log(ipcRenderer.send('getPath', 'userData'));
 
     //生产
     // 确定db是否存在 不存在创建新的    darwin  unix系内核

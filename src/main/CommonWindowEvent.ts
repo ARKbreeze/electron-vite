@@ -1,6 +1,6 @@
 import { ipcMain, app, BrowserWindow } from 'electron';
 import { Update } from './Update';
-import { BrowerWindowOptions } from './config/WindowConfig';
+import { BrowserWindowOptions } from './config/WindowConfig';
 
 export class CommonWindowEvent {
   // 获取对应的webContent
@@ -44,9 +44,14 @@ export class CommonWindowEvent {
       return app.getPath(name);
     });
 
-    //升级
+    //全量升级
     ipcMain.handle('win-update', () => {
       Update.check();
+    });
+
+    // 增量升级
+    ipcMain.handle('win-increment', () => {
+      Update.increment();
     });
   }
 
@@ -73,7 +78,7 @@ export class CommonWindowEvent {
        *  需要优化webview和BrowserView时,依然需要使用线程池方案
        */
 
-      let config = BrowerWindowOptions.getOpenWindowOptions(JSON.parse(param.features));
+      let config = BrowserWindowOptions.getOpenWindowOptions(JSON.parse(param.features));
 
       if (config?.modal === true) {
         config.parent = win;
