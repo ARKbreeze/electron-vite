@@ -6,6 +6,7 @@ import path from 'path';
 import { downloadFile } from './Download';
 import axios from 'axios';
 import prompt from './prompt';
+import Zip from 'adm-zip';
 
 export class Update {
   //全量更新
@@ -62,20 +63,39 @@ export class Update {
     // 下载更新文件到resources里
     console.log(resourcePath);
 
-    await downloadFile(updateUrl, path.join(resourcePath, 'update'), 'app.asar');
+    try {
+      const filePath = await downloadFile(updateUrl, app.getPath('downloads'), 'update.zip');
+      console.log(filePath);
+
+      const zip = new Zip(filePath);
+      zip.extractAllTo(app.getPath('downloads'), true, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+
+      fs.removeSync(filePath);
+    } catch (error) {
+      console.log(error);
+    }
+
     console.log('download');
 
     //执行update      update.exe
-    //              参数一 update.exe的路径
+    //              参数 update.exe的路径
 
     // @echo off
     // taskkill /f /im %3             停止应用需要参数三
     // timeout /T 1 /NOBREAK
-    // del /f /q /a %1\app.asar       移除asar参数二
-    // move %2\app.asar %1            移动文件参数三到参数二
-    // explorer.exe %4                降权启动参数五
-
-    prompt(`"${updateExePath}" "${resourcePath}" ${path.join(resourcePath, 'update')} "electron-vite.exe" "${app.getPath('exe')}"`);
+    // del /f /q /a %1\app.asar       移除asar参数一
+    // move %2\update.asar %1            移动文件参数二到参数一
+    //  ren %1\update.asar app.asar
+    // explorer.exe %4                降权启动参数四
+    if (fs.existsSync(path.join(app.getPath('downloads'), 'update.asar'))) {
+      // prompt(`"${updateExePath}" "${app.getPath('downloads')}" "${resourcePath}" "Electron.exe" "${app.getPath('exe')}"`);
+      prompt(`"${updateExePath}" "${resourcePath}" "${app.getPath('downloads')}" "electron-vite.exe" "${app.getPath('exe')}"`);
+    }
   }
 }
 //  全量就不说了

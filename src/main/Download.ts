@@ -36,8 +36,10 @@ export async function downloadFile(url, targetPath, fileName) {
 
   res.data.pipe(writer);
 
-  return new Promise((resolve, reject) => {
-    writer.on('finish', resolve);
+  return new Promise((resolve: (filepath: string) => void, reject) => {
+    writer.on('finish', () => {
+      resolve(filePath);
+    });
     writer.on('error', () => {
       removeFile(filePath);
       reject();

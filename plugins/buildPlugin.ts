@@ -202,21 +202,21 @@ class BuildObj {
     // asar路径 判断下是否存在
     let asarPath = path.join(process.cwd(), 'release/win-unpacked/resources/app.asar');
     console.log('asar', asarPath);
-    let targetPath = path.join(process.cwd(), 'release/app.asar');
+    let targetPath = path.join(process.cwd(), 'release/update.asar');
     console.log('target', targetPath);
     console.log('exit', fs.existsSync(asarPath));
+    fs.copyFileSync(asarPath, targetPath);
     if (fs.existsSync(asarPath)) {
       console.log('exit', fs.existsSync(asarPath));
 
-      // let zip = new Zip();
+      let zip = new Zip();
       // //打包文件
-      // zip.addLocalFile(asarPath);
+      zip.addLocalFile(targetPath);
       // //打包文件夹
       // // zip.addLocalFolder(asarPath);
-      // zip.writeZip(path.join(targetPath, `app.asar.zip`));
+      zip.writeZip(path.join(targetPath, `../update.zip`));
       // fs.access(asarPath, fs.constants.R_OK);
       // fs.access(targetPath, fs.constants.W_OK);
-      fs.copyFileSync(asarPath, targetPath);
     }
   }
 }

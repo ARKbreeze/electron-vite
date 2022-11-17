@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "success": true,
+  "data": {
+    "forceUpdate": false,
+    "fullUpdate": false,
+    "updateUrl": "http://127.0.0.1:5500/update.zip",
+    "updateExeUrl": "http://127.0.0.1:5500/update.exe",
+    "restart": false,
+    "message": "我要升级成0.0.6",
+    "version": "0.0.6"
+  }
+}

@@ -27,4 +27,5 @@ dist-ssr
 # test & release
 test.js
 release
-server
+server/*.*
+!server/index.json
