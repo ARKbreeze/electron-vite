@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "rebuild": "electron-rebuild -f -w  --module-dir ./node_modules/better-sqlite3"
+    "rebuild:sqlite": "electron-rebuild -f -w  --module-dir ./node_modules/better-sqlite3",
+    "rebuild:naive": "electron-rebuild -f -w  --module-dir ./src/naive"
   },
   "dependencies": {
     "fs-extra": "^10.1.0"
