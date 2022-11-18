@@ -1,17 +1,19 @@
 import fs from 'fs-extra';
 import path from 'path';
+import Zip from 'adm-zip';
 
 export let buildPlugin = () => {
   return {
     name: 'build-plugin',
     // 结束打包回调  在vue打包结束执行  rollup插件
-    closeBundle: () => {
+    closeBundle: async () => {
       let buildObj = new BuildObj();
       buildObj.buildMain();
       buildObj.preparePackageJson();
       buildObj.prepareSqlite();
       buildObj.prepareKnex();
-      buildObj.buildInstaller();
+      await buildObj.buildInstaller();
+      buildObj.createUpdate();
     }
   };
 };
@@ -161,7 +163,7 @@ class BuildObj {
           // 入口
           app: path.resolve(process.cwd(), 'dist')
         },
-        // 除了dependecies外需要的文件  入口应该也不用写
+        // 除了dependencies外需要的文件  入口应该也不用写
         files: ['**'],
         extends: null,
         productName: 'electron-vite',
@@ -191,5 +193,30 @@ class BuildObj {
     };
 
     return require('electron-builder').build(options);
+  }
+
+  /**
+   * @desc 打包增量更新包
+   */
+  createUpdate() {
+    // asar路径 判断下是否存在
+    let asarPath = path.join(process.cwd(), 'release/win-unpacked/resources/app.asar');
+    console.log('asar', asarPath);
+    let targetPath = path.join(process.cwd(), 'release/update.asar');
+    console.log('target', targetPath);
+    console.log('exit', fs.existsSync(asarPath));
+    fs.copyFileSync(asarPath, targetPath);
+    if (fs.existsSync(asarPath)) {
+      console.log('exit', fs.existsSync(asarPath));
+
+      let zip = new Zip();
+      // //打包文件
+      zip.addLocalFile(targetPath);
+      // //打包文件夹
+      // // zip.addLocalFolder(asarPath);
+      zip.writeZip(path.join(targetPath, `../update.zip`));
+      // fs.access(asarPath, fs.constants.R_OK);
+      // fs.access(targetPath, fs.constants.W_OK);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { ipcMain, app, BrowserWindow } from 'electron';
-import { BrowerWindowOptions } from './config/WindowConfig';
+import { Update } from './Update';
+import { BrowserWindowOptions } from './config/WindowConfig';
 
 export class CommonWindowEvent {
   // 获取对应的webContent
@@ -42,6 +43,16 @@ export class CommonWindowEvent {
     ipcMain.handle('getPath', (e, name: any) => {
       return app.getPath(name);
     });
+
+    //全量升级
+    ipcMain.handle('win-update', () => {
+      Update.check();
+    });
+
+    // 增量升级
+    ipcMain.handle('win-increment', () => {
+      Update.increment();
+    });
   }
 
   // 注册
@@ -67,7 +78,7 @@ export class CommonWindowEvent {
        *  需要优化webview和BrowserView时,依然需要使用线程池方案
        */
 
-      let config = BrowerWindowOptions.getOpenWindowOptions(JSON.parse(param.features));
+      let config = BrowserWindowOptions.getOpenWindowOptions(JSON.parse(param.features));
 
       if (config?.modal === true) {
         config.parent = win;

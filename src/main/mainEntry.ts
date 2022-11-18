@@ -4,7 +4,7 @@ import { CustomScheme } from './CustomScheme';
 // 事件监听
 import { CommonWindowEvent } from './CommonWindowEvent';
 // 窗口配置
-import { BrowerWindowOptions } from './config/WindowConfig';
+import { BrowserWindowOptions } from './config/WindowConfig';
 
 //忽略安全相关警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
@@ -18,7 +18,7 @@ app.on('browser-window-created', (e, win) => {
 let mainWindow: BrowserWindow;
 
 app.whenReady().then(() => {
-  mainWindow = new BrowserWindow(BrowerWindowOptions.getMainWindowOptions());
+  mainWindow = new BrowserWindow(BrowserWindowOptions.getMainWindowOptions());
 
   // 只给主窗口注册事件  CommonWindowEvent.regWinEvent(mainWindow);
 
